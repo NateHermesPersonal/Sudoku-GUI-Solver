@@ -74,7 +74,19 @@ def valid(bo, num, pos):
     
     return True
 
+def randomize_solvable_board(bo):
+    solvable = False
+    while not solvable:
+        for i in range(len(bo)):
+            for j in range(len(bo[0])):
+                bo[i][j] = i
+        bo_copy = bo
+        if solve(bo_copy):
+            solvable = True
+
 print_board(board)
 # print (find_empty(board))
 solve(board)
+# print_board(board)
+# randomize_solvable_board(board)
 print_board(board)
