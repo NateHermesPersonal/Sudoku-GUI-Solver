@@ -75,6 +75,9 @@ def valid(bo, num, pos):
     return True
 
 def randomize_solvable_board(bo):
+    # solve blank board, but shuffle numbers instead of going sequentially
+    # then set random squares to 0 (needs to be at least 17 hints?)
+    # check number of solutions?
     solvable = False
     while not solvable:
         for i in range(len(bo)):
