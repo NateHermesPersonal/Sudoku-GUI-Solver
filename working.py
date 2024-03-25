@@ -10,12 +10,24 @@ board = [
         [0, 4, 9, 2, 0, 6, 0, 0, 7]
     ]
 
+def solve(bo):
+    find = find_empty(bo)
+    if not find:
+        return True
+    else:
+        row, col = find
+    
+    for i in range(1,10):
+        if valid(bo, i, (row, col)):
+            bo[row][col] = i
+            if solve(bo):
+                return True
+            bo[row][col] = 0
+
+    return False
+
+
 def print_board(bo):
-    """
-    prints the board
-    :param bo: 2d List of ints
-    :return: None
-    """
     print ("\n")
     for i in range(len(bo)):
         if i % 3 == 0 and i != 0:
@@ -38,16 +50,17 @@ def find_empty(bo):
         for j in range (len(bo[0])):
             if bo[i][j] == 0:
                 return (i, j) # (row, column) format
+    return None
 
 def valid(bo, num, pos):
     # check row
     for i in range(len(bo)):
-        if bo[pos[0]][i] == num and pos[i] != i:
+        if bo[pos[0]][i] == num and pos[1] != i:
             return False
 
     # check column
     for i in range(len(bo)):
-        if bo[i][pos[0]] == num and pos[0] != i:
+        if bo[i][pos[1]] == num and pos[0] != i:
             return False
 
     # check square
@@ -62,4 +75,6 @@ def valid(bo, num, pos):
     return True
 
 print_board(board)
-print (find_empty(board))
+# print (find_empty(board))
+solve(board)
+print_board(board)
