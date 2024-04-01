@@ -50,7 +50,7 @@ def solve(bo,randomize=False):
 
 
 def print_board(bo):
-    print ("\n")
+    # print ("\n")
     for i in range(len(bo)):
         if i % 3 == 0 and i != 0:
             # print("- - - - - - - - - - - - -")
@@ -107,12 +107,24 @@ def randomize_solvable_board(bo):
     print_board(bo)
 
 def randomize_board(bo):
+    # pick random number of movements for each step
+
     # swap rows in block
-    temp = bo[0]
-    bo[0] = bo[1]
-    bo[1] = temp
+    # rows = random.sample(range(3),2)
+    # temp = bo[rows[0]]
+    # bo[rows[0]] = bo[rows[1]]
+    # bo[rows[1]] = temp
 
     # swap rows of blocks
+    blocks = random.sample(range(2),2)
+    # blocks.sort(reverse=True)
+    # print(blocks)
+    for i in range(3):
+        swap1 = 3*blocks[0] + i
+        swap2 = 3*blocks[1] + i
+        temp = bo[swap1]
+        bo[swap1] = bo[swap2]
+        bo[swap2] = temp
 
     # swap columns in block
 
@@ -136,9 +148,9 @@ def import_board():
 #     print(i)
 # print(num_list)
 # solve(board)
-# print_board(board)
-# randomize_board(board)
-# print_board(board)
+print_board(board)
+randomize_board(board)
+print_board(board)
 # solve(board,randomize=False)
 # print_board(board)
 # print(len(solutions))
@@ -154,19 +166,28 @@ def import_board():
 
 path = os.path.join(os.getcwd(), "boards", "60_Sudokus_Pattern_Easy.pdf")
 
-with pdfplumber.open(path) as f:
+# with pdfplumber.open(path) as f:
+#     for page in f.pages:
+#         for table in page.extract_tables():
+#             for i in range(len(table)):
+#                 for j in range(len(table[0])):
+#                     if table[i][j] == '':
+#                         table[i][j] = 0
+#                     else:
+#                         table[i][j] = int(table[i][j])
+#             print_board(table)
     #loop through all pages (f.pages)
     #loop through all tables ([0+i:0+i+9])
         # print(page.extract_tables())
     #print each table after conversion
-    page = f.pages[0]
-    table = page.extract_table()[0:9]
-    for i in range(9):
-        for j in range(9):
-            if table[i][j] == '':
-                table[i][j] = 0
-            else:
-                table[i][j] = int(table[i][j])
-    print_board(table)
-    solve(table,randomize=False)
-    print_board(table)
+    # page = f.pages[0]
+    # table = page.extract_table()[0:9]
+    # for i in range(9):
+    #     for j in range(9):
+    #         if table[i][j] == '':
+    #             table[i][j] = 0
+    #         else:
+    #             table[i][j] = int(table[i][j])
+    # print_board(table)
+    # solve(table,randomize=False)
+    # print_board(table)
