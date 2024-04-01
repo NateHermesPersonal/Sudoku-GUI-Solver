@@ -154,30 +154,19 @@ def import_board():
 
 path = os.path.join(os.getcwd(), "boards", "60_Sudokus_Pattern_Easy.pdf")
 
-# data_frames = tabula.read_pdf(path, pages=1)
-# print(data_frames[0])
-
-# for page in extract_pages(path):
-#     for element in page:
-#         print(element)
-
-# reader = PdfReader(path)
-# print(len(reader.pages))
-# page = reader.pages[0]
-# print(page.extract_text())
-
 with pdfplumber.open(path) as f:
+    #loop through all pages (f.pages)
+    #loop through all tables ([0+i:0+i+9])
+        # print(page.extract_tables())
+    #print each table after conversion
     page = f.pages[0]
     table = page.extract_table()[0:9]
-    print(table)
     for i in range(9):
         for j in range(9):
             if table[i][j] == '':
                 table[i][j] = 0
             else:
                 table[i][j] = int(table[i][j])
-    print(table)
     print_board(table)
-        # print(i.extract_tables())
-# text = extract_text(path,page_numbers={9})
-# print(text)
+    solve(table,randomize=False)
+    print_board(table)
