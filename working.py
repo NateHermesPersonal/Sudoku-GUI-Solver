@@ -1,3 +1,13 @@
+import numpy
+import random
+import os
+import re
+from pdfminer.high_level import extract_pages, extract_text
+import tabula
+from pypdf import PdfReader
+import pdfplumber
+
+# 60_Sudokus_Pattern_Easy.pdf
 board = [
         [7, 8, 0, 4, 0, 0, 1, 2, 0],
         [6, 0, 0, 0, 7, 5, 0, 0, 9],
@@ -10,17 +20,29 @@ board = [
         [0, 4, 9, 2, 0, 6, 0, 0, 7]
     ]
 
-def solve(bo):
+solutions = []
+
+def solve(bo,randomize=False):
+    count = 0
     find = find_empty(bo)
     if not find:
         return True
     else:
         row, col = find
     
-    for i in range(1,10):
+    num_list = numpy.array(range(1,10))
+    if randomize:
+        random.shuffle(num_list)
+    # print(num_list)
+    for i in num_list:
         if valid(bo, i, (row, col)):
             bo[row][col] = i
-            if solve(bo):
+            # s = solve(bo,randomize=randomize)
+            if solve(bo,randomize=randomize):
+                count += 1
+                solutions.append(bo) if bo not in solutions else solutions
+                # print(bo)
+                # print(count)
                 return True
             bo[row][col] = 0
 
@@ -75,21 +97,87 @@ def valid(bo, num, pos):
     return True
 
 def randomize_solvable_board(bo):
-    # solve blank board, but shuffle numbers instead of going sequentially
-    # then set random squares to 0 (needs to be at least 17 hints?)
-    # check number of solutions?
-    solvable = False
-    while not solvable:
-        for i in range(len(bo)):
-            for j in range(len(bo[0])):
-                bo[i][j] = i
-        bo_copy = bo
-        if solve(bo_copy):
-            solvable = True
+    # solves = 10
+    # for k in range(solves):
+    for i in range(len(bo)):
+        for j in range(len(bo[0])):
+            bo[i][j] = 0
+    # print_board(bo)
+    solve(bo, randomize=True)
+    print_board(bo)
 
-print_board(board)
-# print (find_empty(board))
-solve(board)
+def randomize_board(bo):
+    # swap rows in block
+    temp = bo[0]
+    bo[0] = bo[1]
+    bo[1] = temp
+
+    # swap rows of blocks
+
+    # swap columns in block
+
+    # swap columns of blocks
+
+    # swap pairs of numbers
+
+def import_board():
+    pass
+
 # print_board(board)
-# randomize_solvable_board(board)
-print_board(board)
+# print (find_empty(board))
+# num_list = numpy.array(range(1,10))
+# num_list = numpy.array(range(1,10))
+# print(num_list)
+# for i in num_list:
+#     print(i)
+# random.shuffle(num_list)
+# print(num_list)
+# for i in num_list:
+#     print(i)
+# print(num_list)
+# solve(board)
+# print_board(board)
+# randomize_board(board)
+# print_board(board)
+# solve(board,randomize=False)
+# print_board(board)
+# print(len(solutions))
+# solves = 1
+# for k in range(solves):
+#     randomize_solvable_board(board)
+# print_board(board)
+
+# for b in solutions:
+#     print_board(b)
+
+# print(os.getcwd())
+
+path = os.path.join(os.getcwd(), "boards", "60_Sudokus_Pattern_Easy.pdf")
+
+# data_frames = tabula.read_pdf(path, pages=1)
+# print(data_frames[0])
+
+# for page in extract_pages(path):
+#     for element in page:
+#         print(element)
+
+# reader = PdfReader(path)
+# print(len(reader.pages))
+# page = reader.pages[0]
+# print(page.extract_text())
+
+with pdfplumber.open(path) as f:
+    page = f.pages[0]
+    table = page.extract_table()[0:9]
+    print(table)
+    for i in range(9):
+        for j in range(9):
+            if table[i][j] == '':
+                table[i][j] = 0
+            else:
+                table[i][j] = int(table[i][j])
+    print(table)
+    print_board(table)
+        # print(i.extract_tables())
+# text = extract_text(path,page_numbers={9})
+# print(text)
