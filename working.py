@@ -6,6 +6,7 @@ from pdfminer.high_level import extract_pages, extract_text
 import tabula
 from pypdf import PdfReader
 import pdfplumber
+import copy
 
 # 60_Sudokus_Pattern_Easy.pdf
 board = [
@@ -108,7 +109,7 @@ def randomize_solvable_board(bo):
 
 def randomize_board(bo):
     # pick random number of movements for each step
-
+    num_moves = random.randint(0,50)
     # swap rows in block
     # rows = random.sample(range(3),2)
     # temp = bo[rows[0]]
@@ -127,7 +128,6 @@ def randomize_board(bo):
         bo[swap2] = temp
 
     # swap columns in block
-
     # swap columns of blocks
 
     # swap pairs of numbers
@@ -148,9 +148,19 @@ def import_board():
 #     print(i)
 # print(num_list)
 # solve(board)
+# randomize_board(board)
+# print_board(board)
+
+board2 = copy.deepcopy(board)
+for i in range(len(board2)):
+    for j in range(len(board2[0])):
+        board2[i][j] = 0
+for i in range(len(board)):
+    for j in range(len(board[0])):
+        board2[i][j] = board[j][i]
 print_board(board)
-randomize_board(board)
-print_board(board)
+print_board(board2)
+
 # solve(board,randomize=False)
 # print_board(board)
 # print(len(solutions))
@@ -159,15 +169,11 @@ print_board(board)
 #     randomize_solvable_board(board)
 # print_board(board)
 
-# for b in solutions:
-#     print_board(b)
-
-# print(os.getcwd())
-
 path = os.path.join(os.getcwd(), "boards", "60_Sudokus_Pattern_Easy.pdf")
 
 # with pdfplumber.open(path) as f:
 #     for page in f.pages:
+#         # print(len(page.extract_tables()))
 #         for table in page.extract_tables():
 #             for i in range(len(table)):
 #                 for j in range(len(table[0])):
@@ -176,6 +182,7 @@ path = os.path.join(os.getcwd(), "boards", "60_Sudokus_Pattern_Easy.pdf")
 #                     else:
 #                         table[i][j] = int(table[i][j])
 #             print_board(table)
+
     #loop through all pages (f.pages)
     #loop through all tables ([0+i:0+i+9])
         # print(page.extract_tables())
