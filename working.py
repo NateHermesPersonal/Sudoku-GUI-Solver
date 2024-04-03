@@ -8,7 +8,6 @@ from pypdf import PdfReader
 import pdfplumber
 import copy
 
-# 60_Sudokus_Pattern_Easy.pdf
 board = [
         [7, 8, 0, 4, 0, 0, 1, 2, 0],
         [6, 0, 0, 0, 7, 5, 0, 0, 9],
@@ -21,6 +20,10 @@ board = [
         [0, 4, 9, 2, 0, 6, 0, 0, 7]
     ]
 solutions = []
+files_easy = ["60_Sudokus_Pattern_Easy.pdf", "60_Sudokus_Easy.pdf", "60_Sudokus_New_Easy.pdf"]
+files_medium = ["60_Sudokus_Medium.pdf", "60_Sudokus_New_Medium.pdf"]
+files_difficult = ["60_Sudokus_Pattern_Difficult.pdf", "60_Sudokus_Difficult.pdf", "60_Sudokus_New_Difficult.pdf"]
+files_very_difficult = ["30_Sudokus_Very_Difficult.pdf"]
 boards = []
 path = os.path.join(os.getcwd(), "boards", "60_Sudokus_Pattern_Easy.pdf")
 
@@ -210,17 +213,20 @@ def transform_board(bo):
 #     board2 = randomize_board(board2)
 #     solve(board2)
 
-with pdfplumber.open(path) as f:
-    for page in f.pages:
-        # print(len(page.extract_tables()))
-        for table in page.extract_tables():
-            for i in range(len(table)):
-                for j in range(len(table[0])):
-                    if table[i][j] == '':
-                        table[i][j] = 0
-                    else:
-                        table[i][j] = int(table[i][j])
-            boards.append(table)
+for file in files_easy:
+    path = os.path.join(os.getcwd(), "boards", file)
+    with pdfplumber.open(path) as f:
+        for page in f.pages:
+            # print(len(page.extract_tables()))
+            for table in page.extract_tables():
+                for i in range(len(table)):
+                    for j in range(len(table[0])):
+                        if table[i][j] == '':
+                            table[i][j] = 0
+                        else:
+                            table[i][j] = int(table[i][j])
+                boards.append(table)
+print(len(boards))
 random_board = random.choice(boards)
 print_board(random_board)
 random_board = randomize_board(random_board)
