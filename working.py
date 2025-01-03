@@ -212,27 +212,26 @@ def transform_board(bo):
 #     board2 = copy.deepcopy(board)
 #     board2 = randomize_board(board2)
 #     solve(board2)
-
-for file in files_easy:
-    path = os.path.join(os.getcwd(), "boards", file)
-    with pdfplumber.open(path) as f:
-        for page in f.pages:
-            # print(len(page.extract_tables()))
-            for table in page.extract_tables():
-                for i in range(len(table)):
-                    for j in range(len(table[0])):
-                        if table[i][j] == '':
-                            table[i][j] = 0
-                        else:
-                            table[i][j] = int(table[i][j])
-                boards.append(table)
-print(len(boards))
+file = random.choice(files_easy)
+path = os.path.join(os.getcwd(), "boards", file)
+with pdfplumber.open(path) as f:
+    for page in f.pages:
+        # print(len(page.extract_tables()))
+        for table in page.extract_tables():
+            for i in range(len(table)):
+                for j in range(len(table[0])):
+                    if table[i][j] == '':
+                        table[i][j] = 0
+                    else:
+                        table[i][j] = int(table[i][j])
+            boards.append(table)
+# print(len(boards))
 random_board = random.choice(boards)
 print_board(random_board)
 random_board = randomize_board(random_board)
 print_board(random_board)
-solve(board)
-print_board(board)
+solve(random_board)
+print_board(random_board)
 
 
 
